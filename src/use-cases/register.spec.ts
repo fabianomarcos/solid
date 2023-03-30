@@ -1,5 +1,6 @@
+import { IUserAuthenticated } from '@/interfaces/types';
 import { compare } from 'bcryptjs';
-import { expect, describe, it } from "vitest"
+import { expect, describe, it, beforeEach } from "vitest"
 
 import { InMemoryUsersRepository } from './../repositories/in-memory/in-memory-users-repository';
 import { UserAlreadyExistError } from './errors/user-already-exists-error';
@@ -10,9 +11,13 @@ describe("Register Use Case", () => {
   const name = "John Doe"
   const password = "password"
 
-  it("Should hash user password upon registration", async() => {
-    const userRepository = new InMemoryUsersRepository()
-    const registerUseCase = new RegisterUseCase(userRepository)
+  let userRepository: InMemoryUsersRepository
+  let registerUseCase: RegisterUseCase
+  let _user: IUserAuthenticated
+
+  beforeEach(async () => {
+    userRepository = new InMemoryUsersRepository()
+    registerUseCase = new RegisterUseCase(userRepository)
 
     const { user } =  await registerUseCase.execute({
       name,
@@ -20,21 +25,15 @@ describe("Register Use Case", () => {
       password
     })
 
-    const isPasswordCorrectlyHashed = await compare("password", user.password_hash)
+    _user = user
+  })
 
+  it("Should hash user password upon registration", async() => {
+    const isPasswordCorrectlyHashed = await compare("password", _user.password_hash)
     expect(isPasswordCorrectlyHashed).toBe(true)
   })
 
   it("Should not be able to register with same email", async() => {
-    const userRepository = new InMemoryUsersRepository()
-    const registerUseCase = new RegisterUseCase(userRepository)
-
-    await registerUseCase.execute({
-      name,
-      email,
-      password
-    })
-
     await expect(() => registerUseCase.execute({
       name,
       email,
@@ -43,15 +42,6 @@ describe("Register Use Case", () => {
   })
 
   it("Should be able to register", async() => {
-    const userRepository = new InMemoryUsersRepository()
-    const registerUseCase = new RegisterUseCase(userRepository)
-
-    const { user } =  await registerUseCase.execute({
-      name,
-      email,
-      password
-    })
-
-    expect(user.id).toEqual(expect.any(String))
+    expect(_user.id).toEqual(expect.any(String))
   })
 })

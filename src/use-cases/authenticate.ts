@@ -1,5 +1,7 @@
-import { IUserRepository } from '@/repositories/IUserRepository';
 import { compare } from 'bcryptjs';
+
+import { IUser } from '@/interfaces/types';
+import { IUserRepository } from '@/repositories/IUserRepository';
 import { InvalidCredentialsError } from './errors/invalid-credentials-error';
 
 interface IAuthenticateUseCaseRequest {
@@ -8,10 +10,7 @@ interface IAuthenticateUseCaseRequest {
 }
 
 interface IAuthenticateUseCase {
-  user: {
-    email: string
-    password: string
-  }
+  user: IUser
 }
 
 export class AuthenticateUseCase {
