@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 import { expect, describe, it } from "vitest"
 
 import { InMemoryUsersRepository } from './../repositories/in-memory/in-memory-users-repository';
