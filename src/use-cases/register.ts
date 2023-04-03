@@ -1,5 +1,5 @@
 import { UserAlreadyExistError } from './errors/user-already-exists-error';
-import { IUserRepository } from "@/repositories/IUserRepository"
+import { IUserRepository } from "@/repositories/user-repository"
 import { hash } from "bcryptjs"
 
 interface IRegisterUserCaseRequest {

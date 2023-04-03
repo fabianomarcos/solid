@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs';
 
-import { IUser } from '@/interfaces/types';
-import { IUserRepository } from '@/repositories/IUserRepository';
+import { User } from '@prisma/client';
+import { IUserRepository } from '@/repositories/user-repository';
 import { InvalidCredentialsError } from './errors/invalid-credentials-error';
 
 interface IAuthenticateUseCaseRequest {
@@ -10,7 +10,7 @@ interface IAuthenticateUseCaseRequest {
 }
 
 interface IAuthenticateUseCase {
-  user: IUser
+  user: User
 }
 
 export class AuthenticateUseCase {

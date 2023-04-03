@@ -1,7 +1,7 @@
+import { User } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { expect, describe, it, beforeEach } from "vitest"
 
-import { IUser } from '@/interfaces/types';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository';
 import { GetUserProfileUseCase } from './get-user-profile';
 import { ResourceNotFound } from './errors/resource-not-found-error';
@@ -13,7 +13,7 @@ describe("GetUserProfile Use Case", () => {
 
   let userRepository: InMemoryUsersRepository
   let sut: GetUserProfileUseCase
-  let _user: IUser
+  let _user: User
 
   beforeEach(async () => {
     userRepository = new InMemoryUsersRepository()
@@ -39,7 +39,7 @@ describe("GetUserProfile Use Case", () => {
   })
 
   it("Should not be able to get user profile with wrong id", async() => {
-    expect(() => sut.execute({
+    await expect(() => sut.execute({
       userId: "fake_user_id"
     })).rejects.toBeInstanceOf(ResourceNotFound)
   })

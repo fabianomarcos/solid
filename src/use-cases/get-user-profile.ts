@@ -1,13 +1,13 @@
-import { IUser } from '@/interfaces/types';
-import { IUserRepository } from '@/repositories/IUserRepository';
+import { IUserRepository } from '@/repositories/user-repository';
 import { ResourceNotFound } from './errors/resource-not-found-error';
+import { User } from '@prisma/client';
 
 interface IAGetUserProfileUseCaseRequest {
   userId: string
 }
 
 interface IGetUserProfileUseCase {
-  user: IUser
+  user: User
 }
 
 export class GetUserProfileUseCase {

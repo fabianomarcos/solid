@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs';
+import { User } from '@prisma/client';
 import { expect, describe, it, beforeEach } from "vitest"
 
-import { IUser } from '@/interfaces/types';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository';
 import { AuthenticateUseCase } from './authenticate';
 import { InvalidCredentialsError } from './errors/invalid-credentials-error';
@@ -13,10 +13,9 @@ describe("Authenticate Use Case", () => {
 
   let userRepository: InMemoryUsersRepository
   let sut: AuthenticateUseCase
-  let _user: IUser
+  let _user: User
 
   beforeEach(async () => {
-
     userRepository = new InMemoryUsersRepository()
     sut = new AuthenticateUseCase(userRepository)
 
@@ -39,14 +38,14 @@ describe("Authenticate Use Case", () => {
   })
 
   it("Should not be able to authenticate with wrong email", async() => {
-    expect(() => sut.execute({
+    await expect(() => sut.execute({
       email: "fake_email@email.com",
       password
     })).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 
   it("Should not be able to authenticate with wrong password", async() => {
-    expect(sut.execute({
+    await expect(sut.execute({
       email,
       password: "123456"
     })).rejects.toBeInstanceOf(InvalidCredentialsError)

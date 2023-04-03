@@ -1,4 +1,4 @@
-import { IUserRepository } from '../IUserRepository';
+import { IUserRepository } from '../user-repository';
 import { prisma } from "@/lib/prisma"
 import { Prisma, User } from "@prisma/client"
 
