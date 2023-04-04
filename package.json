@@ -22,7 +22,7 @@
     "@vitest/coverage-c8": "0.28.5",
     "@vitest/ui": "0.28.5",
     "eslint": "8.36.0",
-    "prisma": "4.11.0",
+    "prisma": "4.12.0",
     "tsup": "6.6.3",
     "tsx": "3.12.5",
     "typescript": "4.9.5",
