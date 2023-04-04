@@ -7,8 +7,8 @@ import { ResourceNotFound } from '@/use-cases/errors/resource-not-found-error'
 interface ICheckInUseCaseRequest {
   userId: string
   gymId: string
-  userLatitude: string
-  userLongitute: string
+  userLatitude: number
+  userLongitude: number
 }
 
 interface ICheckInUseCase {

@@ -9,6 +9,8 @@ import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-
 describe("Check In Use Case", () => {
   const gymId = "gymIdFake"
   const userId = "userIdFake"
+  const userLatitude = -19.6523552
+  const userLongitude = -43.953214
 
   let checkInRepository: InMemoryCheckInsRepository
   let gymRepository: InMemoryGymsRepository
@@ -38,8 +40,8 @@ describe("Check In Use Case", () => {
     const { checkIn } =  await sut.execute({
       gymId,
       userId,
-      userLatitude: -19.6523552,
-      userLongitude: -43.953214,
+      userLatitude,
+      userLongitude,
     })
 
     _checkIn = checkIn
@@ -52,7 +54,9 @@ describe("Check In Use Case", () => {
   it("Should not be able to check in in twice the same day", async() => {
     await expect(() => sut.execute({
       gymId,
-      userId
+      userId,
+      userLatitude,
+      userLongitude,
     })).rejects.toBeInstanceOf(Error)
   })
 
@@ -61,7 +65,9 @@ describe("Check In Use Case", () => {
 
     const { checkIn } = await sut.execute({
       gymId,
-      userId
+      userId,
+      userLatitude,
+      userLongitude,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
