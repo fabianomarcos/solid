@@ -34,7 +34,6 @@ export class CheckInUseCase {
       new Date()
     )
 
-    console.log('checkInOnSameDay: ', checkInOnSameDay);
     if (checkInOnSameDay) throw new Error()
 
     const checkIn = await this.checkInsRepository.create({
