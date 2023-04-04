@@ -5,6 +5,8 @@ import { Decimal } from '@prisma/client/runtime/library'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository';
 import { CheckInUseCase } from './check-in';
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error';
+import { MaxDistanceError } from './errors/max-distance-error';
 
 const data = {
   gymId: "gymIdFake",
@@ -23,12 +25,11 @@ const gym = {
   title: 'JavaScript Gym',
   description: '',
   phone: '',
-  latitude: new Decimal(-19.6523552),
-  longitude: new Decimal(-43.953214),
+  latitude: -19.6523552,
+  longitude: -43.953214,
 }
 
 describe("Check In Use Case", () => {
-
   afterEach(() => {
     vi.useRealTimers()
   })
@@ -38,7 +39,7 @@ describe("Check In Use Case", () => {
     vi.setSystemTime(new Date(2023, 3, 8, 0, 0))
 
     gymRepository = new InMemoryGymsRepository()
-    gymRepository.items.push(gym)
+    await gymRepository.create(gym)
 
     checkInRepository = new InMemoryCheckInsRepository()
     sut = new CheckInUseCase(checkInRepository, gymRepository)
@@ -53,7 +54,7 @@ describe("Check In Use Case", () => {
   })
 
   it("Should not be able to check in in twice the same day", async() => {
-    await expect(() => sut.execute(data)).rejects.toBeInstanceOf(Error)
+    await expect(() => sut.execute(data)).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
   it("Should not be able to check in in twice the same day", async() => {
@@ -79,7 +80,7 @@ describe("Check In Use Case with different gym ids ", () => {
     gymRepository = new InMemoryGymsRepository()
     sut = new CheckInUseCase(checkInRepository, gymRepository)
 
-    gymRepository.items.push(gym)
+    gymRepository.create(gym)
     gymRepository.items.push(newGym)
 
     await sut.execute(data)
@@ -89,6 +90,6 @@ describe("Check In Use Case with different gym ids ", () => {
       gymId: newGym.id,
       userLatitude: -27.2092052,
       userLongitude: -49.6401091,
-    })).rejects.toBeInstanceOf(Error)
+    })).rejects.toBeInstanceOf(MaxDistanceError)
   })
 })
