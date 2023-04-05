@@ -26,4 +26,13 @@ export class InMemoryGymsRepository implements IGymsRepository {
 
     return gym
   }
+
+  async searchMany(query: string, page: number) {
+    const indexPage = page - 1
+    const totalPerPage = 20
+
+    return this.items
+      .filter(item => item.title.includes(query))
+      .slice(indexPage * totalPerPage, page * totalPerPage)
+  }
 }
