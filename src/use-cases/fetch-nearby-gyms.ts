@@ -1,6 +1,5 @@
-import { IGymsRepository } from "@/repositories/gyms-repository"
-import { Gym } from "@prisma/client"
-
+import { IGymsRepository } from '@/repositories/gyms-repository'
+import { Gym } from '@prisma/client'
 
 export interface IFetchNearbyGymsRequest {
   userLatitude: number

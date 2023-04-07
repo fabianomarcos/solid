@@ -7,7 +7,7 @@ let gymRepository: InMemoryGymsRepository
 let sut: CreateGymUseCase
 let _gym: Gym
 
-describe("Create Gym Use Case", () => {
+describe('Create Gym Use Case', () => {
   beforeEach(async () => {
     gymRepository = new InMemoryGymsRepository()
     sut = new CreateGymUseCase(gymRepository)
@@ -17,13 +17,13 @@ describe("Create Gym Use Case", () => {
       latitude: -27.2092052,
       longitude: -49.6401091,
       phone: null,
-      title: "Gym Academy",
+      title: 'Gym Academy',
     })
 
     _gym = gym
   })
 
-  it("should to create gym", async () => {
+  it('should to create gym', async () => {
     expect(_gym.id).toEqual(expect.any(String))
   })
 })

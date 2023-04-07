@@ -3,7 +3,7 @@ export interface ICoordinate {
   longitude: number
 }
 
-export function getDistanceBetweenCoordinates (
+export function getDistanceBetweenCoordinates(
   from: ICoordinate,
   to: ICoordinate
 ) {

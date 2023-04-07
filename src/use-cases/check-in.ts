@@ -1,9 +1,9 @@
-import { CheckIn } from "@prisma/client"
+import { CheckIn } from '@prisma/client'
 
-import { ICheckInsRepository } from '@/repositories/check-ins-repository';
+import { ICheckInsRepository } from '@/repositories/check-ins-repository'
 import { IGymsRepository } from '@/repositories/gyms-repository'
 import { ResourceNotFound } from '@/use-cases/errors/resource-not-found-error'
-import { getDistanceBetweenCoordinates } from "@/utils/get-distance-between-coordinates";
+import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates'
 import { MaxNumberOfCheckInsError } from '@/use-cases/errors/max-number-of-check-ins-error'
 import { MaxDistanceError } from '@/use-cases/errors/max-distance-error'
 
@@ -21,31 +21,30 @@ interface ICheckInUseCase {
 export class CheckInUseCase {
   constructor(
     private checkInsRepository: ICheckInsRepository,
-    private gymsRepository: IGymsRepository,
-    ) {}
+    private gymsRepository: IGymsRepository
+  ) {}
 
   async execute({
     gymId,
     userId,
     userLatitude,
-    userLongitude
-  }: ICheckInUseCaseRequest):  Promise<ICheckInUseCase> {
-    const maxDistanceInKilometers = 0.1;
-    const gym = await this.gymsRepository.findById(gymId);
+    userLongitude,
+  }: ICheckInUseCaseRequest): Promise<ICheckInUseCase> {
+    const maxDistanceInKilometers = 0.1
+    const gym = await this.gymsRepository.findById(gymId)
 
     if (!gym) throw new ResourceNotFound()
 
     const distance = getDistanceBetweenCoordinates(
       {
         latitude: userLatitude,
-        longitude: userLongitude
+        longitude: userLongitude,
       },
       {
         latitude: gym.latitude.toNumber(),
-        longitude: gym.longitude.toNumber()
+        longitude: gym.longitude.toNumber(),
       }
     )
-
 
     if (distance > maxDistanceInKilometers) throw new MaxDistanceError()
 
@@ -58,7 +57,7 @@ export class CheckInUseCase {
 
     const checkIn = await this.checkInsRepository.create({
       gym_id: gymId,
-      user_id: userId
+      user_id: userId,
     })
 
     return { checkIn }

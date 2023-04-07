@@ -1,4 +1,4 @@
-import { ICheckInsRepository } from '@/repositories/check-ins-repository';
+import { ICheckInsRepository } from '@/repositories/check-ins-repository'
 
 interface IGetUserMetricsRequest {
   userId: string
@@ -11,7 +11,9 @@ interface IGetUserMetricsResponse {
 export class GetUserMetricsHistory {
   constructor(private checkInsRepository: ICheckInsRepository) {}
 
-  async execute({ userId }: IGetUserMetricsRequest): Promise<IGetUserMetricsResponse> {
+  async execute({
+    userId,
+  }: IGetUserMetricsRequest): Promise<IGetUserMetricsResponse> {
     const checkInsCount = await this.checkInsRepository.countByUserId(userId)
     return { checkInsCount }
   }

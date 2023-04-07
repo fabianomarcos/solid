@@ -1,5 +1,5 @@
-import { ICheckInsRepository } from '@/repositories/check-ins-repository';
-import { CheckIn } from '@prisma/client';
+import { ICheckInsRepository } from '@/repositories/check-ins-repository'
+import { CheckIn } from '@prisma/client'
 
 interface IFetchUserRequest {
   userId: string
@@ -13,8 +13,14 @@ interface IFetchUserResponse {
 export class FetchUserCheckInsHistory {
   constructor(private checkInsRepository: ICheckInsRepository) {}
 
-  async execute({ userId, page = 1 }: IFetchUserRequest): Promise<IFetchUserResponse> {
-    const checkIns = await this.checkInsRepository.findManyByUserId(userId, page)
+  async execute({
+    userId,
+    page = 1,
+  }: IFetchUserRequest): Promise<IFetchUserResponse> {
+    const checkIns = await this.checkInsRepository.findManyByUserId(
+      userId,
+      page
+    )
     return { checkIns }
   }
 }

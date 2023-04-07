@@ -1,14 +1,14 @@
-import { CheckIn } from '@prisma/client';
-import { expect, describe, it, beforeEach, vi, afterEach } from "vitest"
+import { CheckIn } from '@prisma/client'
+import { expect, describe, it, beforeEach, vi, afterEach } from 'vitest'
 
-import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository';
-import { ValidateCheckInUseCase } from './validate-check-in';
-import { ResourceNotFound } from './errors/resource-not-found-error';
-import { LateCheckInValidationError } from './errors/late-check-in-validation-error';
+import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
+import { ValidateCheckInUseCase } from './validate-check-in'
+import { ResourceNotFound } from './errors/resource-not-found-error'
+import { LateCheckInValidationError } from './errors/late-check-in-validation-error'
 
 const data = {
-  gymId: "gymIdFake",
-  userId: "userIdFake",
+  gymId: 'gymIdFake',
+  userId: 'userIdFake',
   userLatitude: -19.6523552,
   userLongitude: -43.953214,
 }
@@ -27,7 +27,7 @@ const gym = {
   longitude: -43.953214,
 }
 
-describe("Validate Check In Use Case", () => {
+describe('Validate Check In Use Case', () => {
   afterEach(() => {
     vi.useRealTimers()
   })
@@ -43,7 +43,7 @@ describe("Validate Check In Use Case", () => {
 
     const createdCheckIn = await checkInRepository.create({
       gym_id: gym.id,
-      user_id: data.userId
+      user_id: data.userId,
     })
 
     const { checkIn } = await sut.execute({ checkInId: createdCheckIn.id })
@@ -52,24 +52,28 @@ describe("Validate Check In Use Case", () => {
     _createdCheckIn = createdCheckIn
   })
 
-    it("Should be able to validate the check in", async() => {
-      console.log('distanceInMinutesFromCheckInCreation: ', new Date());
+  it('Should be able to validate the check in', async () => {
+    console.log('distanceInMinutesFromCheckInCreation: ', new Date())
 
-      expect(_checkIn.validated_at).toEqual(new Date())
-    })
-
-    it("Should not be able to validate an inexistent check in", async() => {
-      await expect(() => sut.execute({
-        checkInId: "inexistent_check_in_id"
-      })).rejects.toBeInstanceOf(ResourceNotFound)
-    })
-
-    it("Should not be able to validate the check in after 20 minutes of this creation", async() => {
-      const twentyOneMinutesInMs = 1000 * 60 * 21
-      vi.advanceTimersByTime(twentyOneMinutesInMs);
-
-      await expect(() => sut.execute({
-        checkInId: _createdCheckIn.id
-      })).rejects.toBeInstanceOf(LateCheckInValidationError)
-    })
+    expect(_checkIn.validated_at).toEqual(new Date())
   })
+
+  it('Should not be able to validate an inexistent check in', async () => {
+    await expect(() =>
+      sut.execute({
+        checkInId: 'inexistent_check_in_id',
+      })
+    ).rejects.toBeInstanceOf(ResourceNotFound)
+  })
+
+  it('Should not be able to validate the check in after 20 minutes of this creation', async () => {
+    const twentyOneMinutesInMs = 1000 * 60 * 21
+    vi.advanceTimersByTime(twentyOneMinutesInMs)
+
+    await expect(() =>
+      sut.execute({
+        checkInId: _createdCheckIn.id,
+      })
+    ).rejects.toBeInstanceOf(LateCheckInValidationError)
+  })
+})

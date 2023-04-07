@@ -1,5 +1,5 @@
-import { IGymsRepository } from "@/repositories/gyms-repository"
-import { Gym } from "@prisma/client"
+import { IGymsRepository } from '@/repositories/gyms-repository'
+import { Gym } from '@prisma/client'
 
 interface ICreateGymRequest {
   title: string
@@ -19,7 +19,7 @@ export class CreateGymUseCase {
   async execute(data: ICreateGymRequest): Promise<ICreateGymResponse> {
     const gym = await this.gymRepository.create({
       ...data,
-      phone: data.phone || "",
+      phone: data.phone || '',
     })
 
     return { gym }

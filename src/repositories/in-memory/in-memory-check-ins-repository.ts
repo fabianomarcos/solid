@@ -1,34 +1,40 @@
-import { CheckIn, Prisma } from "@prisma/client"
-import { randomUUID } from 'node:crypto';
-import { ICheckInsRepository } from '../check-ins-repository';
-import dayjs from "dayjs";
+import { CheckIn, Prisma } from '@prisma/client'
+import { randomUUID } from 'node:crypto'
+import { ICheckInsRepository } from '../check-ins-repository'
+import dayjs from 'dayjs'
 
 export class InMemoryCheckInsRepository implements ICheckInsRepository {
   public items: CheckIn[] = []
 
   async update(checkIn: CheckIn): Promise<CheckIn> {
-    const checkInIndex = this.items.findIndex(checkIn => checkIn.id === checkIn.id)
+    const checkInIndex = this.items.findIndex(
+      (checkIn) => checkIn.id === checkIn.id
+    )
 
-    if (checkInIndex >= 0) this.items[checkInIndex] = checkIn;
+    if (checkInIndex >= 0) this.items[checkInIndex] = checkIn
 
-    return checkIn;
+    return checkIn
   }
 
-  async findByUserIdOnDate(userId: string, date: Date): Promise<CheckIn | null> {
-    const startOfTheDay =  dayjs(date).startOf("date")
-    const endOfTheDay =  dayjs(date).endOf("date")
+  async findByUserIdOnDate(
+    userId: string,
+    date: Date
+  ): Promise<CheckIn | null> {
+    const startOfTheDay = dayjs(date).startOf('date')
+    const endOfTheDay = dayjs(date).endOf('date')
 
-    const checkInOnSameDate = this.items.find(checkIn => {
+    const checkInOnSameDate = this.items.find((checkIn) => {
       const checkInDate = dayjs(checkIn.created_at)
       const isOnSameDate =
-        (checkInDate.isSame(startOfTheDay) || checkInDate.isAfter(startOfTheDay)) &&
+        (checkInDate.isSame(startOfTheDay) ||
+          checkInDate.isAfter(startOfTheDay)) &&
         checkInDate.isBefore(endOfTheDay)
       return checkIn.user_id === userId && isOnSameDate
     })
 
     if (!checkInOnSameDate) return null
 
-    return checkInOnSameDate;
+    return checkInOnSameDate
   }
 
   async create(data: Prisma.CheckInUncheckedCreateInput): Promise<CheckIn> {
@@ -39,7 +45,7 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
       created_at: new Date(),
     }
 
-    this.items.push(checkIn);
+    this.items.push(checkIn)
 
     return checkIn
   }
@@ -49,18 +55,16 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
     const totalPerPage = 20
 
     return this.items
-      .filter(checkIn => checkIn.user_id === userId)
+      .filter((checkIn) => checkIn.user_id === userId)
       .slice(indexPage * totalPerPage, page * totalPerPage)
   }
 
   async countByUserId(userId: string): Promise<number> {
-    return this.items
-      .filter(checkIn => checkIn.user_id === userId)
-      .length
+    return this.items.filter((checkIn) => checkIn.user_id === userId).length
   }
 
   async findById(id: string): Promise<CheckIn | null> {
-    const checkIn = this.items.find(item => item.id === id)
+    const checkIn = this.items.find((item) => item.id === id)
 
     if (!checkIn) return null
 
