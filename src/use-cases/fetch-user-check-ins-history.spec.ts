@@ -48,7 +48,7 @@ describe('Fetch User Check In History', () => {
     }
 
     const { checkIns } = await sut.execute({ userId: 'user_id_2', page: 2 })
-    console.log('checkIns', checkIns)
+
     expect(checkIns).toHaveLength(2)
     expect(checkIns).toEqual([
       expect.objectContaining({ gym_id: 'gym_id_21' }),

@@ -53,8 +53,6 @@ describe('Validate Check In Use Case', () => {
   })
 
   it('Should be able to validate the check in', async () => {
-    console.log('distanceInMinutesFromCheckInCreation: ', new Date())
-
     expect(_checkIn.validated_at).toEqual(new Date())
   })
 
