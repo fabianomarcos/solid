@@ -23,7 +23,6 @@
     "@vitest/coverage-c8": "0.28.5",
     "@vitest/ui": "0.28.5",
     "eslint": "8.37.0",
-    "eslint-config-standard-with-typescript": "34.0.1",
     "eslint-config-xo": "0.43.1",
     "eslint-config-xo-typescript": "0.57.0",
     "eslint-plugin-import": "2.27.5",
@@ -36,7 +35,7 @@
     "tsd": "^0.28.0",
     "tsup": "6.6.3",
     "tsx": "3.12.5",
-    "typescript": "5.0.4",
+    "typescript": "^4.1.0",
     "vite-tsconfig-paths": "4.0.5",
     "vitest": "0.28.5"
   },
